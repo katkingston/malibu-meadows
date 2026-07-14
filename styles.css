@@ -106,7 +106,7 @@ html, body {
   font-family: "Suisse Intl", "Helvetica Neue", Arial, sans-serif;
   font-weight: 450;
   font-size: var(--type-link);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--cream);
   text-decoration: none;
@@ -214,7 +214,7 @@ html, body {
   font-family: "Suisse Intl", "Helvetica Neue", Arial, sans-serif;
   font-weight: 450;
   font-size: var(--type-link);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
