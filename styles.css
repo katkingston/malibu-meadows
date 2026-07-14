@@ -175,13 +175,52 @@ html, body {
   transition: opacity 0.7s ease, visibility 0s linear 0.7s;
 }
 
-.about-panel p {
+.about-inner {
   position: absolute;
   left: var(--margin);
+  right: var(--margin);
   top: 29.41svh;
-  max-width: min(24em, calc(100% - 2 * var(--margin)));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 3em 10%;
   font-size: calc(var(--type) * 0.82);
   line-height: 1.25;
+}
+
+.about-main {
+  flex: 1 1 21em;
+  max-width: 24em;
+  display: grid;
+  gap: 1.5em;
+}
+
+.about-title {
+  font-size: var(--type);
+  font-weight: 350;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.about-notes {
+  flex: 0 1 auto;
+  max-width: 26em;
+  display: grid;
+  gap: 1.2em;
+  align-content: start;
+}
+
+.about-notes-title {
+  font-family: "Suisse Intl", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 450;
+  font-size: var(--type-link);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+/* shorter viewports: start higher so nothing clips */
+@media (max-height: 760px), (max-aspect-ratio: 4/5) {
+  .about-inner { top: 16svh; }
 }
 
 /* once the user interacts, intro animations are pinned so
