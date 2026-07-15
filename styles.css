@@ -195,9 +195,8 @@ html, body {
   gap: 1.5em;
 }
 
-.about-title {
+.about-lead {
   font-size: var(--type);
-  font-weight: 350;
   line-height: 1.25;
   text-wrap: balance;
 }
