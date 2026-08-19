@@ -26,10 +26,16 @@
   --dark: #332c2a;           /* ground — from PDF */
   --ground: #423e2f;         /* matches the photograph's ground; fills iOS gaps */
   --about-bg: #554d32;       /* about state */
+  --margin: clamp(18px, 4.7vw, 62px);             /* tightened frame */
+  /* edges add the device safe-area inset so tight margins still
+     clear the iPhone notch / home indicator (0 on desktop) */
+  --edge-top: calc(var(--margin) + env(safe-area-inset-top, 0px));
+  --edge-bottom: calc(var(--margin) + env(safe-area-inset-bottom, 0px));
+  --edge-left: calc(var(--margin) + env(safe-area-inset-left, 0px));
+  --edge-right: calc(var(--margin) + env(safe-area-inset-right, 0px));
   /* clearance so About copy never sits under the corner labels */
-  --about-safe-top: calc(var(--margin) + 3.6em);
-  --about-safe-bottom: calc(var(--margin) + 2.8em);
-  --margin: clamp(24px, 6.881vw, 94px);           /* 54.5 / 792 */
+  --about-safe-top: calc(var(--edge-top) + 3.6em);
+  --about-safe-bottom: calc(var(--edge-bottom) + 2.8em);
   /* very subtle scaling: shallow vw slopes pivoting on the
      PDF reference viewport (1294px), where sizes are exact */
   --type: clamp(17px, 18.1px + 0.48vw, 27px);     /* ~64% of PDF scale */
@@ -92,10 +98,10 @@ html, body {
 /* —— corners · swiss grid, one element per corner —— */
 
 .corner { position: absolute; z-index: 3; }
-.corner-tl { left: var(--margin); top: var(--margin); }
-.corner-tr { right: var(--margin); top: var(--margin); }
-.corner-bl { left: var(--margin); bottom: var(--margin); }
-.corner-br { right: var(--margin); bottom: var(--margin); }
+.corner-tl { left: var(--edge-left); top: var(--edge-top); }
+.corner-tr { right: var(--edge-right); top: var(--edge-top); }
+.corner-bl { left: var(--edge-left); bottom: var(--edge-bottom); }
+.corner-br { right: var(--edge-right); bottom: var(--edge-bottom); }
 
 .monogram { width: clamp(30px, 31.6px + 0.75vw, 44px); }     /* ~57% of PDF scale */
 .wordmark { width: var(--wordmark-w); }                      /* ~68% of PDF scale */
@@ -158,10 +164,10 @@ html, body {
 /* left edges + baseline gaps (in em) measured from the PDF;
    l3 anchors right where the PDF's third line ended */
 .l1 { margin-left: 26.77%; }
-.l2 { margin-left: min(67.17%, 100% - var(--margin) - 6.6em); }
+.l2 { margin-left: min(67.17%, 100% - var(--edge-right) - 6.6em); }
 .l3 { margin-left: auto; margin-right: 10.8%; width: fit-content; margin-top: 0.459em; }
 /* start of the line aligns with the A of MEADOWS (28.4% into the mark) */
-.l4 { margin-left: calc(var(--margin) + 0.284 * var(--wordmark-w)); }
+.l4 { margin-left: calc(var(--edge-left) + 0.284 * var(--wordmark-w)); }
 
 .l1 { animation-delay: 0.8s; }
 .l2 { animation-delay: 0.95s; }
@@ -218,7 +224,7 @@ html, body {
 .about-inner {
   min-height: 100%;
   box-sizing: border-box;
-  padding: var(--about-safe-top) var(--margin) var(--about-safe-bottom);
+  padding: var(--about-safe-top) var(--edge-right) var(--about-safe-bottom) var(--edge-left);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
