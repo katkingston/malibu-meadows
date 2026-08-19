@@ -225,7 +225,7 @@ html, body {
   align-content: center;           /* fallback for older engines */
   align-content: safe center;      /* center when it fits, else top-align + scroll */
   gap: 3em 10%;
-  font-size: calc(var(--type) * 0.82);
+  font-size: calc(var(--type) * 0.76);
   line-height: 1.25;
 }
 
@@ -238,7 +238,7 @@ html, body {
 }
 
 .about-lead {
-  font-size: var(--type);
+  font-size: calc(var(--type) * 0.92);
   line-height: 1.25;
   text-wrap: balance;
 }
