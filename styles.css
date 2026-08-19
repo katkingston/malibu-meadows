@@ -100,8 +100,19 @@ html, body {
 .corner { position: absolute; z-index: 3; }
 .corner-tl { left: var(--edge-left); top: var(--edge-top); }
 .corner-tr { right: var(--edge-right); top: var(--edge-top); }
-.corner-bl { left: var(--edge-left); bottom: var(--edge-bottom); }
-.corner-br { right: var(--edge-right); bottom: var(--edge-bottom); }
+
+/* both bottom labels share one bar so their baselines always match,
+   regardless of button-vs-anchor rendering quirks (Safari) */
+.corner-bottom {
+  left: var(--edge-left);
+  right: var(--edge-right);
+  bottom: var(--edge-bottom);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  pointer-events: none;            /* empty middle still closes the panel */
+}
+.corner-bottom .link { pointer-events: auto; }
 
 .monogram { width: clamp(30px, 31.6px + 0.75vw, 44px); }     /* ~57% of PDF scale */
 .wordmark { width: var(--wordmark-w); }                      /* ~68% of PDF scale */
@@ -109,8 +120,7 @@ html, body {
 
 .corner-tl { animation: appear 1.6s ease 0.25s both; }
 .corner-tr { animation: appear 1.6s ease 0.45s both; }
-.corner-bl { animation: appear 1.6s ease 1.85s both; }
-.corner-br { animation: appear 1.6s ease 2s both; }
+.corner-bottom { animation: appear 1.6s ease 1.85s both; }
 
 /* —— links · Suisse Light, all caps —— */
 
