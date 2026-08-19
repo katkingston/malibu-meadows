@@ -89,8 +89,10 @@
   let themeTimer;
   function setTheme(color) {
     themeMeta.setAttribute('content', color);
-    // also paint the page canvas so any iOS safe-area sliver matches
+    // also paint the page canvas (html + body) so any iOS safe-area
+    // sliver matches even where the chrome tint doesn't update
     document.documentElement.style.background = color;
+    document.body.style.background = color;
   }
   function setAbout(open) {
     document.body.classList.add('settled');

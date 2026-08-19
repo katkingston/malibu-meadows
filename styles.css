@@ -26,7 +26,7 @@
   --dark: #332c2a;           /* ground — from PDF */
   --ground: #423e2f;         /* matches the photograph's ground; fills iOS gaps */
   --about-bg: #554d32;       /* about state */
-  --margin: clamp(18px, 4.7vw, 62px);             /* tightened frame */
+  --margin: clamp(18px, 4.7vw, 32px);             /* tight frame — desktop halved */
   /* edges add the device safe-area inset so tight margins still
      clear the iPhone notch / home indicator (0 on desktop) */
   --edge-top: calc(var(--margin) + env(safe-area-inset-top, 0px));
@@ -39,7 +39,7 @@
   /* very subtle scaling: shallow vw slopes pivoting on the
      PDF reference viewport (1294px), where sizes are exact */
   --type: clamp(17px, 18.1px + 0.48vw, 27px);     /* ~64% of PDF scale */
-  --type-link: clamp(11px, 10.4px + 0.15vw, 14px);
+  --type-link: clamp(12px, 11px + 0.25vw, 14px);  /* slightly larger on mobile */
   --wordmark-w: clamp(77px, 81.6px + 1.87vw, 118px);
   /* baseline offset: Times Now ascent = 763/1000 em */
   --ascent: 0.763em;
@@ -115,15 +115,20 @@ html, body {
 /* —— links · Suisse Light, all caps —— */
 
 .link {
+  display: block;                  /* button + anchor share one box model */
   font-family: "Suisse Intl", "Helvetica Neue", Arial, sans-serif;
   font-weight: 450;
   font-size: var(--type-link);
+  line-height: 1;                  /* identical baseline for CLOSE & handle */
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--cream);
   text-decoration: none;
   background: none;
   border: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
   padding: 0.4em 0;                /* generous hit area, invisible */
   transition: opacity 0.3s ease;
@@ -177,7 +182,7 @@ html, body {
 /* —— about · solid ground, two sentences —— */
 
 .about-panel {
-  position: absolute;
+  position: fixed;                 /* cover the FULL screen incl. iOS safe areas */
   inset: 0;
   z-index: 1;
   background: var(--about-bg);
