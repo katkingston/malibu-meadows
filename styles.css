@@ -24,7 +24,11 @@
 :root {
   --cream: #ddd9ce;          /* text / logo — from PDF */
   --dark: #332c2a;           /* ground — from PDF */
+  --ground: #423e2f;         /* matches the photograph's ground; fills iOS gaps */
   --about-bg: #554d32;       /* about state */
+  /* clearance so About copy never sits under the corner labels */
+  --about-safe-top: calc(var(--margin) + 3.6em);
+  --about-safe-bottom: calc(var(--margin) + 2.8em);
   --margin: clamp(24px, 6.881vw, 94px);           /* 54.5 / 792 */
   /* very subtle scaling: shallow vw slopes pivoting on the
      PDF reference viewport (1294px), where sizes are exact */
@@ -39,14 +43,16 @@
 
 html, body {
   height: 100%;
-  background: var(--dark);
+  background: var(--ground);       /* olive matches the plate — no iOS band */
   overflow: hidden;
 }
 
 .hero {
   position: relative;
   height: 100svh;
+  height: 100dvh;                  /* fill under iOS Safari's dynamic toolbars */
   overflow: hidden;
+  background: var(--ground);
   color: var(--cream);
   font-family: "Times Now", "Times New Roman", serif;
   font-weight: 350;
@@ -73,7 +79,7 @@ html, body {
    lock the flower to the same scale as the reference crop, letting
    the synthesized ground fill the extra width */
 @media (min-aspect-ratio: 2311/1761) {
-  .hero { background: #444030; }         /* ground tone past the plate */
+  .hero { background: var(--ground); }   /* ground tone past the plate */
   .flower {
     inset: auto;
     top: -73.88svh;                      /* window top 1301/1761 of svh */
@@ -169,20 +175,55 @@ html, body {
   inset: 0;
   z-index: 1;
   background: var(--about-bg);
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   cursor: pointer;                 /* click / tap anywhere to close */
   transition: opacity 0.7s ease, visibility 0s linear 0.7s;
 }
 
-.about-inner {
+/* copy scrolls within a safe band; fade edges dissolve it into the
+   corner-label zones instead of colliding with them */
+.about-panel::before,
+.about-panel::after {
+  content: "";
   position: absolute;
-  left: var(--margin);
-  right: var(--margin);
-  top: 29.41svh;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.about-panel::before {
+  top: 0;
+  height: var(--about-safe-top);
+  background: linear-gradient(var(--about-bg) 45%, transparent);
+}
+.about-panel::after {
+  bottom: 0;
+  height: var(--about-safe-bottom);
+  background: linear-gradient(transparent, var(--about-bg) 55%);
+}
+
+.about-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;              /* only ever scroll vertically */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.about-inner p { overflow-wrap: break-word; }
+
+.about-inner {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: var(--about-safe-top) var(--margin) var(--about-safe-bottom);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  align-content: center;           /* fallback for older engines */
+  align-content: safe center;      /* center when it fits, else top-align + scroll */
   gap: 3em 10%;
   font-size: calc(var(--type) * 0.82);
   line-height: 1.25;
@@ -190,7 +231,8 @@ html, body {
 
 .about-main {
   flex: 1 1 21em;
-  max-width: 24em;
+  min-width: 0;                    /* allow shrink below content width */
+  max-width: min(24em, 100%);
   display: grid;
   gap: 1.5em;
 }
@@ -202,8 +244,9 @@ html, body {
 }
 
 .about-notes {
-  flex: 0 1 auto;
-  max-width: 26em;
+  flex: 1 1 20em;
+  min-width: 0;                    /* allow shrink below content width */
+  max-width: min(28em, 100%);
   display: grid;
   gap: 1.2em;
   align-content: start;
@@ -215,11 +258,6 @@ html, body {
   font-size: var(--type-link);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-}
-
-/* shorter viewports: start higher so nothing clips */
-@media (max-height: 760px), (max-aspect-ratio: 4/5) {
-  .about-inner { top: 16svh; }
 }
 
 /* once the user interacts, intro animations are pinned so
