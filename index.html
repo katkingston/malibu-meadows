@@ -83,12 +83,27 @@
 <script>
   const toggle = document.getElementById('about-toggle');
   const panel = document.getElementById('about');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const GROUND = '#423e2f';   // hero / photo ground
+  const ABOUT = '#554d32';    // about panel
+  let themeTimer;
+  function setTheme(color) {
+    themeMeta.setAttribute('content', color);
+    // also paint the page canvas so any iOS safe-area sliver matches
+    document.documentElement.style.background = color;
+  }
   function setAbout(open) {
     document.body.classList.add('settled');
     document.body.classList.toggle('about-open', open);
     toggle.setAttribute('aria-expanded', open);
     toggle.textContent = open ? 'Close' : 'About';
     panel.setAttribute('aria-hidden', !open);
+    clearTimeout(themeTimer);
+    if (open) {
+      setTheme(ABOUT);                                   // match the panel immediately
+    } else {
+      themeTimer = setTimeout(() => setTheme(GROUND), 700);  // revert after the fade-out
+    }
   }
   toggle.addEventListener('click', () => setAbout(!document.body.classList.contains('about-open')));
   panel.addEventListener('click', () => setAbout(false));
